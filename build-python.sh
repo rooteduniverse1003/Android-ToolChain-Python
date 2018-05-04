@@ -369,24 +369,6 @@ build_host_python ()
 
     run make install
     fail_panic "Could not install Python!"
-
-    # Pretty printers.
-    PYPPDIR="$INSTALLDIR/share/pretty-printers/"
-
-    # .. for gnu stdlibc++
-    GCC_DIRS=$(find $TOOLCHAIN_SRC_DIR/gcc/ -maxdepth 1 -name "gcc-*" -type d)
-    for GCC_DIR in $GCC_DIRS; do
-        (
-        if [ -d "$GCC_DIR/libstdc++-v3/python" ]; then
-            cd "$GCC_DIR/libstdc++-v3/python"
-            [ -d "$PYPPDIR/libstdcxx/$(basename $GCC_DIR)" ] || mkdir -p "$PYPPDIR/libstdcxx/$(basename $GCC_DIR)"
-            run find . -path "*.py" -exec cp {} "$PYPPDIR/libstdcxx/$(basename $GCC_DIR)/" \;
-        fi
-        )
-    done
-
-    # .. for STLPort
-    run cp -rf $NDK_DIR/sources/host-tools/gdb-pretty-printers/stlport/gppfs-0.2 $PYPPDIR/stlport
 }
 
 need_build_host_python ()
