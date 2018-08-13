@@ -1,3 +1,5 @@
 /Python-*/Lib/plat-win32/STDDEF.py
 /Python-*/Lib/plat-win32/regen
 /Python-*/Parser/pgen.stamp
+*.pyo
+*.pyc
