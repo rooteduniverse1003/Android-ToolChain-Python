@@ -21,8 +21,12 @@ import os
 import site
 
 site.addsitedir(os.path.join(os.path.dirname(__file__), '../../ndk/build/lib'))
+site.addsitedir(os.path.join(os.path.dirname(__file__), '../../ndk'))
 
-import build_support  # pylint: disable=import-error
+# pylint: disable=import-error,wrong-import-position
+import build_support
+from ndk.hosts import Host
+# pylint: enable=import-error,wrong-import-position
 
 
 def main(args):
@@ -33,15 +37,16 @@ def main(args):
         'bash', 'build-python.sh', toolchain_dir_arg,
     ]
 
-    if args.host in ('windows', 'windows64'):
+    if args.host.is_windows:
         build_cmd.append('--mingw')
 
-    if args.host != 'windows':
+    if args.host != Host.Windows:
         build_cmd.append('--try-64')
 
     build_cmd.append('--build-dir=' + os.path.join(args.out_dir, 'python'))
 
     build_support.build(build_cmd, args, intermediate_package=True)
+
 
 if __name__ == '__main__':
     build_support.run(main)
